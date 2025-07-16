@@ -3,7 +3,7 @@ name: chai-code
 services:
   course-frontend:
     build:
-      context: ./frontend/
+      context: ./frontend/ # path to the frontend directory from where the Dockerfile is located relative to this compose file
       dockerfile: Dockerfile
     container_name: chai-course-frontend
     ports:
