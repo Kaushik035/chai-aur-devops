@@ -1,0 +1,66 @@
+name: chai-code
+
+services:
+  course-frontend:
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
+    container_name: chai-course-frontend
+    ports:
+      - "5173:5173"
+    env_file:
+      - ./frontend/.env
+    volumes:
+      - ./frontend:/AppFrontend:delegated
+      - /AppFrontend/node_modules  # <- this protects container node_modules
+    depends_on:
+      - course-backend
+      - course-DB
+    networks:
+      - course-network
+    
+  course-backend:
+    build:
+      context: ./backend/
+      dockerfile: Dockerfile
+    container_name: chai-course-backend
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./backend/.env
+    volumes:
+      - ./backend:/AppBackend
+    depends_on:
+      - course-DB
+      - course-cache
+    networks:
+      - course-network
+
+  course-cache:
+    image: redis:7-alpine
+    container_name: chai-course-cache
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_cache:/data
+    networks:
+      - course-network
+
+  course-DB:
+    image: mongo:6
+    container_name: chai-course-db
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - course-network
+
+volumes:
+  redis_cache:
+  mongo_data:
+networks:
+  course-network:  
