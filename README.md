@@ -30,3 +30,7 @@ The application environment variables are stored in a `.env` file. You can find 
 ### API Response Caching
 
 ![Screenshot 3](./screenshots/Three.png)
+
+Solution to the problem statement is in the give way:
+<img width="1702" height="807" alt="image" src="https://github.com/user-attachments/assets/0336d818-ba6f-47c0-b735-211de13a4276" />
+
